@@ -1,0 +1,28 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: akzhol-issuer  
+spec:
+  acme:
+    server: https://acme-v02.api.letsencrypt.org/directory
+    email: akzhol.suborov@gmail.com
+    privateKeySecretRef:
+      name: letsencrypt-staging
+    solvers:
+    - http01:
+        ingress:
+          class: nginx
+
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: akzhol-crt  
+spec:
+  secretName: akzhol-tls-secret2
+  dnsNames:
+    - subo7.akzhol7.ml
+  issuerRef:
+    name: akzhol-issuer
+    kind: Issuer
+    group: cert-manager.io

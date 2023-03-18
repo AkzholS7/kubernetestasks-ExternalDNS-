@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: external-dns
+  namespace: demo
+spec:
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: external-dns
+  template:
+    metadata:
+      labels:
+        app: external-dns
+    spec:
+      serviceAccountName: akzhols
+      containers:
+      - name: external-dns
+        image: registry.k8s.io/external-dns/external-dns:v0.13.2
+        args:
+        - --source=ingress
+        - --domain-filter=akzhol7.ml
+        - --provider=google
+        - --google-project=future-linker-379208
+        - --registry=txt
+        - --txt-owner-id=google
